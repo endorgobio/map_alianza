@@ -1,0 +1,46 @@
+{
+  "locations": [
+    {
+      "name": "Bogotá - Centro",
+      "latitude": 4.711,
+      "longitude": -74.0721,
+      "material": "Paper",
+      "value": 56
+    },
+    {
+      "name": "Medellín - Poblado",
+      "latitude": 6.2088,
+      "longitude": -75.567,
+      "material": "Carton",
+      "value": 89
+    },
+    {
+      "name": "Cali - Norte",
+      "latitude": 3.4516,
+      "longitude": -76.532,
+      "material": "Glass",
+      "value": 72
+    },
+    {
+      "name": "Barranquilla - Centro",
+      "latitude": 10.9639,
+      "longitude": -74.7964,
+      "material": "Paper",
+      "value": 34
+    },
+    {
+      "name": "Cartagena - Getsemaní",
+      "latitude": 10.4221,
+      "longitude": -75.5353,
+      "material": "Carton",
+      "value": 61
+    },
+    {
+      "name": "Bucaramanga - Cabecera",
+      "latitude": 7.1193,
+      "longitude": -73.1227,
+      "material": "Glass",
+      "value": 45
+    }
+  ]
+}
