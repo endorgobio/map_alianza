@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-# import folium
+import folium
 import json
 import os
 import plotly.graph_objects as go
@@ -21,23 +21,21 @@ datasets = {
 }
 
 
-# def create_map_folium(selected_dataset):
-#     locations = datasets[selected_dataset]
-#     map_center = [locations[0]["latitude"], locations[0]["longitude"]]
-#     folium_map = folium.Map(location=map_center, zoom_start=6)
+def create_map_folium(selected_dataset):
+    locations = datasets[selected_dataset]
+    map_center = [locations[0]["latitude"], locations[0]["longitude"]]
+    folium_map = folium.Map(location=map_center, zoom_start=6)
     
-#     for loc in locations:
-#         folium.Marker(
-#             [loc["latitude"], loc["longitude"]],
-#             popup=f"{loc['name']} ({loc['material']} - {loc['value']})",
-#             tooltip=loc["name"]
-#         ).add_to(folium_map)
+    for loc in locations:
+        folium.Marker(
+            [loc["latitude"], loc["longitude"]],
+            popup=f"{loc['name']} ({loc['material']} - {loc['value']})",
+            tooltip=loc["name"]
+        ).add_to(folium_map)
     
-#     return folium_map._repr_html_()
+    return folium_map._repr_html_()
 
 # Alternative implementation using Plotly
-
-
 def create_map_plotly(dataset):
 
     # TODO: this can be simplified by creating the dataframe directly from the json
@@ -89,8 +87,8 @@ def create_map_plotly(dataset):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     selected_dataset = request.form.get("dataset", "Dataset 1")
-    #map_html = create_map_folium(selected_dataset)
-    map_html = create_map_plotly(selected_dataset)
+    map_html = create_map_folium(selected_dataset)
+    # map_html = create_map_plotly(selected_dataset)
     return render_template("index.html", map_html=map_html, datasets=datasets.keys(), selected_dataset=selected_dataset)
 
 if __name__ == '__main__':
