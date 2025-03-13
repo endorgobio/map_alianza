@@ -21,16 +21,8 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Global variables to store optimization solution and default controls
-opt_solution = {}
-controls_default = {}
 
-# Paths to data files
-json_path = "data/data.json"
-url_coord = 'https://docs.google.com/uc?export=download&id=1VYEnH735Tdgqe9cS4ccYV0OUxMqQpsQh'
-url_dist = 'https://docs.google.com/uc?export=download&id=1Apbc_r3CWyWSVmxqWqbpaYEacbyf1wvV'
-url_demand = 'https://docs.google.com/uc?export=download&id=1w0PMK36H4Aq39SAaJ8eXRU2vzHMjlWGe'
-
+# Read original data
 json_path = "data/data.json"
 def read_file(json_path):
     # Load JSON file
@@ -141,10 +133,10 @@ def index():
     html
         Rendered HTML template for the main page.
     """
-    # fig = create_map(df)
-    # graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    # return render_template('index.html', graph_json=graph_json)
-    return render_template('index.html')
+    fig = create_map(df)
+    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('index.html', graph_json=graph_json)
+    # return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
