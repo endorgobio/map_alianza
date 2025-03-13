@@ -1,46 +1,46 @@
 {
   "locations": [
     {
-      "name": "Bogotá - Centro",
-      "latitude": 4.711,
-      "longitude": -74.0721,
+      "name": "Pereira - Centro",
+      "latitude": 4.8143,
+      "longitude": -75.6946,
       "material": "Paper",
-      "value": 56
+      "value": 63
     },
     {
-      "name": "Medellín - Poblado",
-      "latitude": 6.2088,
-      "longitude": -75.567,
+      "name": "Santa Marta - Rodadero",
+      "latitude": 11.2073,
+      "longitude": -74.2306,
       "material": "Carton",
-      "value": 89
+      "value": 78
     },
     {
-      "name": "Cali - Norte",
-      "latitude": 3.4516,
-      "longitude": -76.532,
+      "name": "Manizales - Chipre",
+      "latitude": 5.0689,
+      "longitude": -75.5174,
       "material": "Glass",
-      "value": 72
+      "value": 55
     },
     {
-      "name": "Barranquilla - Centro",
-      "latitude": 10.9639,
-      "longitude": -74.7964,
+      "name": "Cúcuta - Centro",
+      "latitude": 7.8939,
+      "longitude": -72.5078,
       "material": "Paper",
-      "value": 34
+      "value": 40
     },
     {
-      "name": "Cartagena - Getsemaní",
-      "latitude": 10.4221,
-      "longitude": -75.5353,
+      "name": "Villavicencio - Primavera",
+      "latitude": 4.142,
+      "longitude": -73.6266,
       "material": "Carton",
-      "value": 61
+      "value": 70
     },
     {
-      "name": "Bucaramanga - Cabecera",
-      "latitude": 7.1193,
-      "longitude": -73.1227,
+      "name": "Ibagué - Interlaken",
+      "latitude": 4.4389,
+      "longitude": -75.2322,
       "material": "Glass",
-      "value": 45
+      "value": 52
     }
   ]
 }

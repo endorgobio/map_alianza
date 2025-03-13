@@ -1,40 +1,52 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 12 09:09:47 2025
-
-@author: pablo.maya
-"""
-
-from flask import Flask, render_template, request, jsonify
-import plotly
-import os
-import pandas as pd
+from flask import Flask, render_template, request
+import folium
 import json
+import os
 import plotly.graph_objects as go
+import plotly.io as pio
+import pandas as pd
 
-
-
-
-# Initialize Flask application
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+data_folder = "data"
 
-# Read original data
-json_path = "data/data.json"
-def read_file(json_path):
-    # Load JSON file
-    with open(json_path, "r") as file:
-        data = json.load(file)
-    # Convert to DataFrame
-    df = pd.DataFrame(data["locations"])
+def load_json(filename):
+    filepath = os.path.join(data_folder, filename)
+    with open(filepath, "r", encoding="utf-8") as file:
+        return json.load(file)["locations"]
+
+datasets = {
+    "Dataset 1": load_json("data1.json"),
+    "Dataset 2": load_json("data2.json")
+}
+
+# dataset=datasets['Dataset 1']
+# latitudes = [loc["latitude"] for loc in dataset]
+# longitudes = [loc["longitude"] for loc in dataset]
+# names = [loc["name"] for loc in dataset]
+# a = 1
+
+def create_map_folium(selected_dataset):
+    locations = datasets[selected_dataset]
+    map_center = [locations[0]["latitude"], locations[0]["longitude"]]
+    folium_map = folium.Map(location=map_center, zoom_start=6)
     
-    return df
-df = read_file(json_path)
+    for loc in locations:
+        folium.Marker(
+            [loc["latitude"], loc["longitude"]],
+            popup=f"{loc['name']} ({loc['material']} - {loc['value']})",
+            tooltip=loc["name"]
+        ).add_to(folium_map)
+    
+    return folium_map._repr_html_()
 
-def create_map(df):
+# Alternative implementation using Plotly
+
+
+def create_map_plotly(dataset):
+
+    # TODO: this can be simplified by creating the dataframe directly from the json
+    df = pd.DataFrame(datasets[dataset])
     # Initialize the map figure
     map_actors = go.Figure()
 
@@ -76,67 +88,16 @@ def create_map(df):
         width=800
     )
 
-    return map_actors
+    return pio.to_html(map_actors, full_html=False)
 
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    """
-    Handle file upload and update parameters.
-
-    Returns
-    -------
-    json
-        JSON response containing graph data and default controls.
-    """
-    global parameters
-
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
-    if file:
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
-        
-        # parameters = read_data(filepath, url_coord, url_dist, url_demand)
-       
-        return None #jsonify({'graph_json': graph_json, 'controls_default': controls_default})
-
-
-
-@app.route('/update_graph', methods=['POST'])
-def update_graph():
-    """
-    Update the graph based on the optimization solution.
-
-    Returns
-    -------
-    json
-        JSON response containing updated graph data.
-    """
-    global opt_solution
-
-    
-    fig = create_map(df)
-    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graph_json
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    """
-    Render the main page with initial graph and controls.
-
-    Returns
-    -------
-    html
-        Rendered HTML template for the main page.
-    """
-    fig = create_map(df)
-    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('index.html', graph_json=graph_json)
-    # return render_template('index.html')
+    selected_dataset = request.form.get("dataset", "Dataset 1")
+    map_html = create_map_folium(selected_dataset)
+    #map_html = create_map_plotly(selected_dataset)
+    return render_template("index.html", map_html=map_html, datasets=datasets.keys(), selected_dataset=selected_dataset)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
